@@ -382,7 +382,6 @@ Product Scope
 
 .  The product is not required to handle items without expiry dates.
 .  The product is not required to handle items without names.
-.  The product is not required to product 
 .  The product is not required to produce reminders when the app is inactive.
 
 Usability
