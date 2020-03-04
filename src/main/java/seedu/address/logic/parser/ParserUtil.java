@@ -9,10 +9,11 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
+import seedu.address.model.item.Email;
+import seedu.address.model.item.ExpiryDate;
+import seedu.address.model.item.Name;
+import seedu.address.model.item.Phone;
+import seedu.address.model.item.sort.MethodOfSorting;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -51,6 +52,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String expiryDate} into a {@code ExpiryDate}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code name} is invalid.
+     */
+    public static ExpiryDate parseExpiryDate(String expiryDate) throws ParseException {
+        requireNonNull(expiryDate);
+        String trimmedDate = expiryDate.trim();
+        if (!ExpiryDate.isValidExpiryDate(trimmedDate)) {
+            throw new ParseException(ExpiryDate.MESSAGE_CONSTRAINTS);
+        }
+        return new ExpiryDate(trimmedDate);
+    }
+
+    /**
      * Parses a {@code String phone} into a {@code Phone}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -63,21 +79,6 @@ public class ParserUtil {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
         return new Phone(trimmedPhone);
-    }
-
-    /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code address} is invalid.
-     */
-    public static Address parseAddress(String address) throws ParseException {
-        requireNonNull(address);
-        String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
-        }
-        return new Address(trimmedAddress);
     }
 
     /**
@@ -117,8 +118,27 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
-            tagSet.add(parseTag(tagName));
+            String trimmedTag = tagName.trim();
+            if (!trimmedTag.isEmpty()) {
+                tagSet.add(parseTag(trimmedTag));
+            }
         }
         return tagSet;
     }
+
+    /**
+     * Parses a {@code String method} into an {@code MethodOfSorting}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code method} is invalid.
+     */
+    public static MethodOfSorting parseMethodOfSorting(String method) throws ParseException {
+        requireNonNull(method);
+        String trimmedMethodOfSorting = method.trim();
+        if (!MethodOfSorting.isValidMethodOfSorting(trimmedMethodOfSorting)) {
+            throw new ParseException(MethodOfSorting.MESSAGE_CONSTRAINTS);
+        }
+        return new MethodOfSorting(trimmedMethodOfSorting);
+    }
+
 }
